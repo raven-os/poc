@@ -1,2 +1,6 @@
 # forward
-Contains the POC for the Forward (i.e: gnome3 profile extension + python image viewer)
+
+Contains the POC for the Forward :
+
+* [Gnome Profile extension](https://github.com/raven-os/forward/tree/master/profile-extension)
+* Python image viewer

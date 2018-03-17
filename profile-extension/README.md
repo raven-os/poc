@@ -18,6 +18,7 @@ The extension will search for `Named Pipes` in the `/raven_com` directory, so yo
 
 ```
 $ sudo mkdir /raven_com
+$ sudo chmod 777 /raven_com
 ```
 
 ### Installing

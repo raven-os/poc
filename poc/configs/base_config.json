@@ -1,0 +1,32 @@
+{
+    "name": {
+	"value": "Image Viewer"
+    },
+    "width": {
+	"value": 500
+    },
+    "height": {
+	"value": 400
+    },
+    "Scroll": {
+	"function" : "scroll",
+	"direction": "up",
+	"type": "other",
+	"level": 0,
+	"should ask": {
+	    "direction": ["up", "down"]
+	}
+    },
+    "Open file": {
+	"function" : "open",
+	"type": "button",
+	"side" : "left",
+	"level": 0
+    },
+    "Save file": {
+	"function" : "save",
+	"type": "button",
+	"side" : "right",
+	"level": 0
+    }
+}

@@ -6,6 +6,13 @@ from tkinter import Tk, Frame, filedialog, StringVar, Button, Radiobutton, Label
 
 import config
 
+import os
+import errno
+from threading import Thread
+import select
+from time import sleep
+stop = False
+
 class App(Tk):
     def chg_image(self):
         if self.frame.im.mode == "1": # bitmap image
@@ -47,6 +54,10 @@ class App(Tk):
     def zoomOut(self, percent=10):
         pass
 
+    def updateConfig(self, config):
+        self.config = config
+        self.title(self.config['name']['value'])
+
     def __init__(self):
         super(App, self).__init__()
 
@@ -80,6 +91,49 @@ class App(Tk):
         self.frame.pack()
 
 
+def read_fifo(app):
+    fd = -1
+    while (not stop):
+        try:
+            if fd == -1:
+                print("Open fifo")
+                fd = os.open("/raven_com/fifo", os.O_RDONLY | os.O_NONBLOCK)
+            data = os.read(fd, 1)
+            if not stop and len(data) > 0:
+                print("Read: {0}".format(data))
+                if (b'1' in data):
+                    app.updateConfig(config.Config(config = "configs/config1.json"))
+                elif (b'2' in data):
+                    app.updateConfig(config.Config(config = "configs/config2.json"))
+
+            sleep(0.1)
+        except OSError as oe:
+            print(oe)
+    print("Close fifo")
+    os.close(fd)
+
+def createFifo():
+    try:
+        os.mkfifo("/raven_com/fifo")
+    except OSError as oe:
+        if (oe.errno != errno.EEXIST):
+            return -1
+    return 0
+
 if __name__ == "__main__":
     app = App()
+    ret = createFifo()
+
+    if ret != 0:
+        print("Cannot create communication channel for profile:")
+        print("sudo mkdir /raven_com && sudo chmod 777 /raven_com")
+    else:
+        thread = Thread(target = read_fifo, args=[app])
+        thread.start()
+
     app.mainloop()
+    stop = True
+
+    if ret == 0:
+        thread.join()
+        os.remove("/raven_com/fifo")

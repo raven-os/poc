@@ -1,11 +1,12 @@
 import json
 
 CONFIG_PATH = "configs/"
-CONFIG = "config.json"
+CONFIG1 = "config1.json"
+CONFIG2 = "config2.json"
 BASE_CONFIG = "base_config.json"
 
 class Config(dict):
-    def __init__(self, config=CONFIG_PATH+CONFIG, base_config=CONFIG_PATH+BASE_CONFIG):
+    def __init__(self, config=CONFIG_PATH+CONFIG1, base_config=CONFIG_PATH+BASE_CONFIG):
         self.config_path = config
         with open(self.config_path, 'r') as f1, open(base_config, 'r') as f2:
             self.config_json = json.load(f1)
@@ -29,7 +30,7 @@ class Config(dict):
 
     def __setitem__(self, b, c):
         self.complete_json[b] = c
-            
+
     def __getitem__(self, b):
         return self.complete_json[b]
 

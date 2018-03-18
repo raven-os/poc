@@ -1,1 +1,11 @@
-{"name": {"value": "config2"}, "Scroll": {"function": "scroll", "direction": "up", "type": "other", "level": 0}}
+{
+  "name": {
+    "value": "config2"
+  },
+  "Scroll": {
+    "function": "scroll",
+    "direction": "up",
+    "type": "other",
+    "level": 0
+  }
+}

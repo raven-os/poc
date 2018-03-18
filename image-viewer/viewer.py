@@ -23,10 +23,18 @@ class App(Tk):
                           width=self.img.width(), height=self.img.height())
 
     def open(self):
-        filename = filedialog.askopenfilename()
-        if filename != "":
+        ftypes = [
+            ("Images", "*.jpeg *.jpg *.png *.png *.gif *.bmp"),
+            ("JPEG", "*.jpeg"),
+            ("JPG", "*.jpg"),
+            ("PNG", "*.png"),
+            ("GIF", "*.gif"),
+            ("BMP", "*.bmp")
+        ]
+        filename = filedialog.askopenfilename(initialdir="~/Downloads", filetypes = ftypes)
+        if filename:
             self.frame.im = PIL.Image.open(filename)
-        self.chg_image()
+            self.chg_image()
 
     def ask_preferencies(self, b):
         window = Tk()
@@ -56,15 +64,19 @@ class App(Tk):
 
     def updateConfig(self, config):
         self.config = config
+        self.updateViewer()
+
+    def updateViewer(self):
         self.title(self.config['name']['value'])
+        self.geometry("%dx%d" % (self.config['width']['value'], self.config['height']['value']))
+
 
     def __init__(self):
         super(App, self).__init__()
 
         self.config = config.Config()
 
-        self.title(self.config['name']['value'])
-        self.geometry("%dx%d" % (self.config['width']['value'], self.config['height']['value']))
+        self.updateViewer()
 
         self.frame = Frame(self)
         buttons_function_ptr = {

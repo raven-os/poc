@@ -7,5 +7,11 @@
     "direction": "up",
     "type": "other",
     "level": 0
+  },
+  "width": {
+     "value": 900
+  },
+  "height": {
+     "value": 900
   }
 }

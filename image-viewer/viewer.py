@@ -134,9 +134,19 @@ class App(Tk):
         }
 
         for elem in self.config:
-            if "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"]:
+            button = self.getButton(elem)
+
+            if not button and "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"]:
                 Button(self.buttons, text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
+            elif button and "display" in self.config[elem] and not self.config[elem]["display"]:
+                button.destroy()
         self.updateImage()
+
+    def getButton(self, text):
+        for button in self.buttons.winfo_children():
+            if button['text'] == text:
+                return button
+        return None
 
     def bindEvents(self):
         self.bind("<Button-4>", self.mouse_wheel)

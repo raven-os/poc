@@ -1,23 +1,23 @@
 {
     "name": {
-	"value": "Image Viewer profile 2"
+      "value": "Image Viewer profile 2"
     },
     "width": {
-	"value": 900
+      "value": 900
     },
     "height": {
-	"value": 900
+      "value": 900
     },
-    "scroll": {
-	"direction": "up",
-	"type": "other",
-	"level": 0
+    "Scroll": {
+      "direction": "up",
+      "type": "other",
+      "level": 0
     },
-    "open": {
-	"function": "open",
-	"display": false,
-	"type": "button",
-	"side" : "right",
-	"level": 0
+    "Open file": {
+      "function": "open",
+      "display": false,
+      "type": "button",
+      "side" : "right",
+      "level": 0
     }
 }

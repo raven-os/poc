@@ -16,13 +16,27 @@ import math
 
 class App(Tk):
     def updateImage(self):
-        if (not self.image):
+        if not self.image:
             return
         if self.image.mode == "1": # bitmap image
             self.imageTk = PIL.ImageTk.BitmapImage(self.image, foreground="white")
         else:                   # photo image
             self.imageTk = PIL.ImageTk.PhotoImage(self.image)
         self.label.config(image=self.imageTk, bg="#000000")
+
+    def defaultZoom(self):
+        (_, _, width, height) = self.bbox(0, 0)
+        if self.image.width >= self.image.height:
+            self.min = width * -1
+            self.max = width * 2
+            (nwidth, nheight) = self.zoomRatioWidth(width)
+        else:
+            self.min = height * -1
+            self.max = height * 2
+            (nwidth, nheight) = self.zoomRatioHeight(height)
+        self.image = self.image.resize((nwidth, nheight), PIL.Image.ANTIALIAS)
+        self.backup = self.image.copy()
+
 
     def open(self):
         ftypes = [
@@ -37,6 +51,8 @@ class App(Tk):
         if filename:
             self.image = PIL.Image.open(filename)
             self.backup = self.image.copy()
+            self.defaultZoom()
+
             self.updateImage()
 
     def ask_preferencies(self, b):
@@ -58,35 +74,41 @@ class App(Tk):
         self.ask_preferencies("Scroll")
         pass
 
-    def zoom(self, x, y):
-        if self.image and x > 0 and y > 0:
-            self.image = self.backup.resize((x, y), PIL.Image.ANTIALIAS)
+    def zoomRatioWidth(self, new_width):
+        if new_width < 0:
+            new_width = 0
+        wpercent = (new_width / float(self.backup.width))
+        hsize = int((float(self.backup.height) * float(wpercent)))
+        return (new_width, hsize)
 
-    def zoomRatio(self):
-        if (self.image):
-            new_width = self.backup.width + self.zooming
-            if new_width < 0:
-                new_width = 0
-            wpercent = (new_width / float(self.backup.width))
-            hsize = int((float(self.backup.height) * float(wpercent)))
-            return (new_width, hsize)
+    def zoomRatioHeight(self, new_height):
+        if new_height < 0:
+            new_height = 0
+        hpercent = (new_height / float(self.backup.height))
+        wsize = int((float(self.backup.width) * float(hpercent)))
+        return (wsize, new_height)
 
     def zoomIn(self, percent=10):
-        if self.image:
-            self.zooming += percent
-            self.zoom(self.zoomRatio()[0], self.zoomRatio()[1])
+        tmp = percent + int(self.min * -1 / 100)
+        if not (self.image and self.zooming + tmp < self.max):
+            return
+        self.zooming += tmp
+        self.image = self.backup.resize(self.zoomRatioWidth(self.backup.width + self.zooming),
+                                        PIL.Image.ANTIALIAS)
 
     def zoomOut(self, percent=10):
-        if self.image and self.image.width > 10 and self.image.height > 10:
-            self.zooming -= percent
-            self.zoom(self.zoomRatio()[0], self.zoomRatio()[1])
+        tmp = percent + int(self.min * -1 / 100)
+        if not (self.image and self.zooming - tmp > self.min):
+            return
+        self.zooming -= tmp
+        self.image = self.backup.resize(self.zoomRatioWidth(self.backup.width + self.zooming),
+                                        PIL.Image.ANTIALIAS)
 
     def rotate(self, rotation):
         if self.image:
-            self.image = self.image.rotate(rotation)
-            self.backup = self.backup.rotate(rotation)
+            self.image = self.image.rotate(rotation, expand = True)
+            self.backup = self.backup.rotate(rotation, expand = True)
             self.updateImage()
-
 
     def updateConfig(self, config):
         self.config = config
@@ -142,18 +164,21 @@ class App(Tk):
             self.zoomOut()
         self.updateImage()
 
-
-
     def __init__(self):
         super(App, self).__init__()
 
         self.config = config.Config()
 
-        self.label = Label(self, padx=10, pady=10)
-        self.label.pack(fill = BOTH)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
+        self.label = Label(self, padx=20, pady=10)
+        self.label.grid(row=0, column=0)
 
         self.buttons = Frame(self)
-        self.buttons.pack(side = BOTTOM)
+        self.buttons.grid(row=1, column=0)
+
+        self.update()
 
         self.image = None
         self.imageTk = None
@@ -169,6 +194,8 @@ class App(Tk):
 
         self.updateViewer()
         self.bindEvents()
+
+
 
 def read_fifo(app):
     fd = -1

@@ -2,7 +2,7 @@
 
 import PIL.Image
 import PIL.ImageTk
-from tkinter import Tk, Frame, filedialog, StringVar, Button, Radiobutton, Label, LEFT, RIGHT, TOP, BOTTOM, BOTH
+from tkinter import Tk, Toplevel, Frame, filedialog, StringVar, Button, Radiobutton, Label, LEFT, RIGHT, TOP, BOTTOM, BOTH, W, ttk
 
 import config
 
@@ -58,22 +58,27 @@ class App(Tk):
     def ask_preferencies(self, b):
         if not "should ask" in self.config[b]:
             return
-        window = Tk()
+        window = Toplevel(self)
         window.title("Select preferencies")
+        window.geometry("300x300")
+        v = {}
         for key in self.config[b]["should ask"]:
             frame = Frame(window)
-            v = StringVar()
+            v[key] = StringVar()
+            v[key].set(self.config[b]["should ask"][key][0])
             for elem in self.config[b]["should ask"][key]:
-                Radiobutton(frame, text=elem, variable=v, value=elem).pack()
-            print("B", dir(v), v.get())
-            self.config[key] = v
-        frame.pack()
+                Radiobutton(frame, text=elem, variable=v[key], value=elem).pack(anchor=W)
+            frame.pack()
         window.mainloop()
+        for elem in v:
+            self.config[b][elem] = v[elem].get()
+
+        print(self.config[b])
         del self.config[b]["should ask"]
+        print(self.config[b])
         self.config.put(b, self.config[b])
 
     def save(self):
-        self.ask_preferencies("Scroll")
         pass
 
     def zoomRatioWidth(self, new_width):
@@ -214,8 +219,11 @@ def createFifo():
             return -1
     return 0
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
     app = App()
+    # app.style = ttk.Style()
+    # #('clam', 'alt', 'default', 'classic')
+    # app.style.theme_use("clam")
     ret = createFifo()
 
     if ret != 0:

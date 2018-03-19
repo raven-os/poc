@@ -12,7 +12,6 @@ class Config(dict):
             self.config_json = json.load(f1)
             self.base_config_json = json.load(f2)
             self.complete_json = {**self.base_config_json, **self.config_json}
-            self.complete_json['actions'] = {**self.base_config_json['actions'], **self.config_json['actions']}
         pass
 
     def _update(self):

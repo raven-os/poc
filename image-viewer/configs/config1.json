@@ -1,10 +1,1 @@
-{
-  "name": "Image Viewer profile 1",
-  "actions": {
-    "scroll": {
-      "direction": "up",
-      "type": "other",
-      "level": 0
-    }
-  }
-}
+{"name": {"value": "Image Viewer profile 1"}, "Scroll": {"direction": "up", "type": "other", "level": 0}}

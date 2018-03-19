@@ -1,27 +1,47 @@
 {
-  "name": "Image Viewer",
-  "width": 500,
-  "height": 400,
-  "actions": {
-    "scroll": {
-      "direction": "up",
-      "type": "other",
-      "level": 0,
-      "should ask": {
-         "direction": ["up", "down"]
-       }
-     },
-    "open": {
-      "display": true,
-      "type": "button",
-      "side" : "left",
-      "level": 0
+    "name": {
+	"value": "Image Viewer"
     },
-    "save": {
-      "display": true,
-      "type": "button",
-      "side" : "right",
-      "level": 0
+    "width": {
+	"value": 500
+    },
+    "height": {
+	"value": 400
+    },
+    "Scroll": {
+	"direction": "up",
+	"type": "other",
+	"level": 0,
+	"should ask": {
+            "direction": ["up", "down"]
+	}
+    },
+    "↶": {
+	"function": "rotate_left",
+	"display": true,
+	"type": "button",
+	"side" : "left",
+	"level": 0
+    },
+    "↷" : {
+	"function": "rotate_right",
+	"display": true,
+	"type": "button",
+	"side" : "right",
+	"level": 0
+    },
+    "Open file": {
+	"function": "open",
+	"display": true,
+	"type": "button",
+	"side" : "left",
+	"level": 0
+    },
+    "Save file": {
+	"function": "save",
+	"display": true,
+	"type": "button",
+	"side" : "right",
+	"level": 0
     }
-  }
 }

@@ -56,6 +56,8 @@ class App(Tk):
             self.updateImage()
 
     def ask_preferencies(self, b):
+        if not "should ask" in self.config[b]:
+            return
         window = Tk()
         window.title("Select preferencies")
         for key in self.config[b]["should ask"]:
@@ -63,7 +65,7 @@ class App(Tk):
             v = StringVar()
             for elem in self.config[b]["should ask"][key]:
                 Radiobutton(frame, text=elem, variable=v, value=elem).pack()
-            print(v)
+            print("B", dir(v), v.get())
             self.config[key] = v
         frame.pack()
         window.mainloop()
@@ -115,12 +117,14 @@ class App(Tk):
         self.updateViewer()
 
     def updateViewer(self):
-        self.title(self.config['name'])
-        self.geometry("%dx%d" % (self.config['width'], self.config['height']))
+        self.title(self.config['name']['value'])
+        self.geometry("%dx%d" % (self.config['width']['value'], self.config['height']['value']))
 
         buttons_function_ptr = {
             "open": self.open,
-            "save": self.save
+            "save": self.save,
+            "rotate_left": lambda: self.rotate(90),
+            "rotate_right": lambda: self.rotate(-90)
         }
         buttons_side_ptr = {
             "left": LEFT,
@@ -129,28 +133,12 @@ class App(Tk):
             "bottom": BOTTOM
         }
 
-        actions = self.config['actions']
-        for action in actions:
-            if "display" in actions[action] and actions[action]["display"]:
-                if (action == "open"):
-                    if (self.openBtn is None):
-                        self.openBtn = Button(self.buttons, text=action, command=buttons_function_ptr[action])
-                    self.openBtn.pack(side=buttons_side_ptr[actions[action]["side"]])
-                elif (action == "save"):
-                    if (self.saveBtn is None):
-                        self.saveBtn = Button(self.buttons, text=action, command=buttons_function_ptr[action])
-                    self.saveBtn.pack(side=buttons_side_ptr[actions[action]["side"]])
-                else:
-                    Button(self.frame, text=action, command=buttons_function_ptr[action]).pack(side=buttons_side_ptr[actions[action]["side"]])
+        self.buttons = Frame(self)
+        self.buttons.pack(side = BOTTOM)
 
-            if "display" in actions[action] and not actions[action]["display"]:
-                if action == "open" and self.openBtn is not None:
-                    self.openBtn.destroy()
-                    self.openBtn = None
-                if action == "save" and self.saveBtn is not None:
-                    self.saveBtn.destroy()
-                    self.saveBtn = None
-
+        for elem in self.config:
+            if "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"]:
+                Button(self.buttons, text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
         self.updateImage()
 
     def bindEvents(self):
@@ -186,15 +174,8 @@ class App(Tk):
         self.saveBtn = None
         self.zooming = 0
 
-        self.rotationLeftBtn = Button(self.buttons, text="<-", command= lambda: self.rotate(90))
-        self.rotationLeftBtn.pack(side = LEFT)
-        self.rotationRightBtn = Button(self.buttons, text="->", command= lambda: self.rotate(-90))
-        self.rotationRightBtn.pack(side = RIGHT)
-
-
         self.updateViewer()
         self.bindEvents()
-
 
 
 def read_fifo(app):

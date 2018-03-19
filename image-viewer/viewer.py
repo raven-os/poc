@@ -52,6 +52,7 @@ class App(Tk):
             self.image = PIL.Image.open(filename)
             self.backup = self.image.copy()
             self.defaultZoom()
+            self.filename = filename
 
             self.updateImage()
 
@@ -79,7 +80,9 @@ class App(Tk):
         self.config.put(b, self.config[b])
 
     def save(self):
-        pass
+        if not self.image:
+            return
+        self.image.save(self.filename)
 
     def zoomRatioWidth(self, new_width):
         if new_width < 0:

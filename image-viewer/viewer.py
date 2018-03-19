@@ -12,15 +12,17 @@ from threading import Thread
 import select
 from time import sleep
 stop = False
+import math
 
 class App(Tk):
-    def chg_image(self):
-        if self.frame.im.mode == "1": # bitmap image
-            self.img = PIL.ImageTk.BitmapImage(self.frame.im, foreground="white")
+    def updateImage(self):
+        if (not self.image):
+            return
+        if self.image.mode == "1": # bitmap image
+            self.imageTk = PIL.ImageTk.BitmapImage(self.image, foreground="white")
         else:                   # photo image
-            self.img = PIL.ImageTk.PhotoImage(self.frame.im)
-        self.label.config(image=self.img, bg="#000000",
-                          width=self.img.width(), height=self.img.height())
+            self.imageTk = PIL.ImageTk.PhotoImage(self.image)
+        self.label.config(image=self.imageTk, bg="#000000")
 
     def open(self):
         ftypes = [
@@ -33,8 +35,9 @@ class App(Tk):
         ]
         filename = filedialog.askopenfilename(initialdir="~/Downloads", filetypes = ftypes)
         if filename:
-            self.frame.im = PIL.Image.open(filename)
-            self.chg_image()
+            self.image = PIL.Image.open(filename)
+            self.backup = self.image.copy()
+            self.updateImage()
 
     def ask_preferencies(self, b):
         window = Tk()
@@ -51,24 +54,94 @@ class App(Tk):
         del self.config[b]["should ask"]
         self.config.put(b, self.config[b])
 
-
     def save(self):
         self.ask_preferencies("Scroll")
         pass
 
+    def zoom(self, x, y):
+        if self.image and x > 0 and y > 0:
+            self.image = self.backup.resize((x, y), PIL.Image.ANTIALIAS)
+
+    def zoomRatio(self):
+        if (self.image):
+            new_width = self.backup.width + self.zooming
+            if new_width < 0:
+                new_width = 0
+            wpercent = (new_width / float(self.backup.width))
+            hsize = int((float(self.backup.height) * float(wpercent)))
+            return (new_width, hsize)
+
     def zoomIn(self, percent=10):
-        pass
+        if self.image:
+            self.zooming += percent
+            self.zoom(self.zoomRatio()[0], self.zoomRatio()[1])
 
     def zoomOut(self, percent=10):
-        pass
+        if self.image and self.image.width > 10 and self.image.height > 10:
+            self.zooming -= percent
+            self.zoom(self.zoomRatio()[0], self.zoomRatio()[1])
+
+    def rotate(self, rotation):
+        if self.image:
+            self.image = self.image.rotate(rotation)
+            self.backup = self.backup.rotate(rotation)
+            self.updateImage()
+
 
     def updateConfig(self, config):
         self.config = config
         self.updateViewer()
 
     def updateViewer(self):
-        self.title(self.config['name']['value'])
-        self.geometry("%dx%d" % (self.config['width']['value'], self.config['height']['value']))
+        self.title(self.config['name'])
+        self.geometry("%dx%d" % (self.config['width'], self.config['height']))
+
+        buttons_function_ptr = {
+            "open": self.open,
+            "save": self.save
+        }
+        buttons_side_ptr = {
+            "left": LEFT,
+            "right": RIGHT,
+            "top": TOP,
+            "bottom": BOTTOM
+        }
+
+        actions = self.config['actions']
+        for action in actions:
+            if "display" in actions[action] and actions[action]["display"]:
+                if (action == "open"):
+                    if (self.openBtn is None):
+                        self.openBtn = Button(self.buttons, text=action, command=buttons_function_ptr[action])
+                    self.openBtn.pack(side=buttons_side_ptr[actions[action]["side"]])
+                elif (action == "save"):
+                    if (self.saveBtn is None):
+                        self.saveBtn = Button(self.buttons, text=action, command=buttons_function_ptr[action])
+                    self.saveBtn.pack(side=buttons_side_ptr[actions[action]["side"]])
+                else:
+                    Button(self.frame, text=action, command=buttons_function_ptr[action]).pack(side=buttons_side_ptr[actions[action]["side"]])
+
+            if "display" in actions[action] and not actions[action]["display"]:
+                if action == "open" and self.openBtn is not None:
+                    self.openBtn.destroy()
+                    self.openBtn = None
+                if action == "save" and self.saveBtn is not None:
+                    self.saveBtn.destroy()
+                    self.saveBtn = None
+
+        self.updateImage()
+
+    def bindEvents(self):
+        self.bind("<Button-4>", self.mouse_wheel)
+        self.bind("<Button-5>", self.mouse_wheel)
+
+    def mouse_wheel(self, event):
+        if (event.num == 4):
+            self.zoomIn()
+        else:
+            self.zoomOut()
+        self.updateImage()
+
 
 
     def __init__(self):
@@ -76,32 +149,26 @@ class App(Tk):
 
         self.config = config.Config()
 
+        self.label = Label(self, padx=10, pady=10)
+        self.label.pack(fill = BOTH)
+
+        self.buttons = Frame(self)
+        self.buttons.pack(side = BOTTOM)
+
+        self.image = None
+        self.imageTk = None
+        self.openBtn = None
+        self.saveBtn = None
+        self.zooming = 0
+
+        self.rotationLeftBtn = Button(self.buttons, text="<-", command= lambda: self.rotate(90))
+        self.rotationLeftBtn.pack(side = LEFT)
+        self.rotationRightBtn = Button(self.buttons, text="->", command= lambda: self.rotate(-90))
+        self.rotationRightBtn.pack(side = RIGHT)
+
+
         self.updateViewer()
-
-        self.frame = Frame(self)
-        buttons_function_ptr = {
-            "open": self.open,
-            "save": self.save
-            }
-        buttons_side_ptr = {
-            "left": LEFT,
-            "right": RIGHT,
-            "top": TOP,
-            "bottom": BOTTOM
-            }
-        for elem in self.config:
-            if "type" in self.config[elem]:
-                if self.config[elem]["type"] == "button":
-                    Button(self.frame, text=elem, command=buttons_function_ptr[self.config[elem]["function"]]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
-
-
-        self.frame.pack(side=TOP, fill=BOTH)
-
-        self.label = Label(self)
-        self.label.pack()
-
-        self.frame.pack()
-
+        self.bindEvents()
 
 def read_fifo(app):
     fd = -1

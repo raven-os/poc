@@ -133,9 +133,6 @@ class App(Tk):
             "bottom": BOTTOM
         }
 
-        self.buttons = Frame(self)
-        self.buttons.pack(side = BOTTOM)
-
         for elem in self.config:
             if "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"]:
                 Button(self.buttons, text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])

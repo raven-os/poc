@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import image
-from tkinter import Tk, Toplevel, Frame, filedialog, StringVar, Button, Radiobutton, Label, LEFT, RIGHT, TOP, BOTTOM, BOTH, W, ttk
-
+from tkinter import Tk, Toplevel, Frame, filedialog, StringVar, Button, Radiobutton, Label, LEFT, RIGHT, TOP, BOTTOM, BOTH, W, ttk, Scrollbar, VERTICAL, NE, SE, Canvas
+import tkinter as tk
 import config
 
 from communication import startCom, stopCom
@@ -11,8 +11,19 @@ import math
 import os
 import glob
 import re
+from enum import Enum
+
+from pathlib import Path
+
+from scrolledWindow import ScrolledWindow
+
+
+class Mode(Enum):
+    GALLERY = 1
+    VIEWER = 2
 
 class App(Tk):
+
 
     def findImageList(self, filename):
         self.dir = os.path.dirname(filename)
@@ -24,6 +35,31 @@ class App(Tk):
                 self.list.append(file)
                 if (self.dir +"/" + file == filename):
                     self.listIndex = len(self.list) -1
+
+    def displayGallery(self):
+        self.findImageList(str(Path.home()) + "/Downloads/kek")
+        self.column = 4
+
+        (_, _, width, height) = self.bbox(0, 0)
+        self.imgWidth = math.floor((width - self.column * 2 * 11) / self.column) - 2
+        col = 0
+        row = 0
+        self.listLabel = []
+        self.listImage = []
+        for img in self.list:
+            label = Label(self.gallery.scrollwindow)
+            label.grid(row=row, column=col, padx=10, pady=10)
+            self.listLabel.append(label)
+            col += 1
+            if col >= 4:
+                row += 1
+                col = 0
+            im = image.Image(label)
+            im.open(self.dir + "/" + img)
+            im._setSizeUnsafe(self.imgWidth, self.imgWidth)
+            self.listImage.append(im)
+
+
 
     def navigate(self, i):
         if len(self.list) < 2:
@@ -75,11 +111,20 @@ class App(Tk):
 
     def updateConfig(self, config):
         self.config = config
-        self.updateViewer()
+        if self.mode == Mode.GALLERY:
+            self.updateGallery()
+        elif self.mode == Mode.VIEWER:
+            self.updateViewer()
+
+    def updateGallery(self):
+        Button(self.buttonsGallery, text="Go to Viewer", command=self.switchMode).pack(side=LEFT)# need config
+        self.displayGallery()
+
 
     def updateViewer(self):
         self.title(self.config['name']['value'])
         self.geometry("%dx%d" % (self.config['width']['value'], self.config['height']['value']))
+
 
         buttons_function_ptr = {
             "open": self.open,
@@ -93,20 +138,23 @@ class App(Tk):
             "top": TOP,
             "bottom": BOTTOM
         }
-        Button(self.buttons, text="->", command=lambda: self.navigate(1)).pack(side=RIGHT)
-        Button(self.buttons, text="<-", command=lambda:self.navigate(-1)).pack(side=LEFT)
+        Button(self.buttonsViewer, text="Go to Gallery", command=self.switchMode).pack(side=LEFT)# need config
+        Button(self.buttonsViewer, text="->", command=lambda: self.navigate(1)).pack(side=RIGHT)# need config
+        Button(self.buttonsViewer, text="<-", command=lambda:self.navigate(-1)).pack(side=LEFT)# need config
+
 
         for elem in self.config:
             button = self.getButton(elem)
 
             if not button and "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"]:
-                Button(self.buttons, text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
+                Button(self.buttonsViewer, text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
             elif button and "display" in self.config[elem] and not self.config[elem]["display"]:
                 button.destroy()
         self.image.update()
+        self.bindEvents()
 
     def getButton(self, text):
-        for button in self.buttons.winfo_children():
+        for button in self.buttonsViewer.winfo_children():
             if button['text'] == text:
                 return button
         return None
@@ -115,32 +163,70 @@ class App(Tk):
         self.bind("<Button-4>", self.mouse_wheel) # MouseWheel Up
         self.bind("<Button-5>", self.mouse_wheel) # MouseWheel Daoun
 
+    def unbindEvents(self):
+        self.unbind("<Button-4>")
+        self.unbind("<Button-5>")
+
     def mouse_wheel(self, event):
         if (event.num == 4):
             self.image.zoomIn()
         else:
             self.image.zoomOut()
 
+    def switchMode(self):
+        if self.mode == Mode.GALLERY:
+            self.initViewer()
+        elif self.mode == Mode.VIEWER:
+            self.initGallery()
+
+    def initGallery(self):
+        self.unbindEvents()
+        self.mode = Mode.GALLERY
+        if self.label:
+            self.label.destroy()
+            self.label = None
+        if self.buttonsViewer:
+            self.buttonsViewer.destroy()
+            self.buttonsViewer = None
+        self.gallery = ScrolledWindow(self)
+        self.gallery.grid(row=0, column=0)
+        self.buttonsGallery = Frame(self)
+        self.buttonsGallery.grid(row=1, column=0)
+        self.update()
+        self.updateGallery()
+
+    def initViewer(self):
+        self.mode = Mode.VIEWER
+        if self.gallery:
+            self.gallery.destroyAll()
+            self.gallery = None
+        if self.buttonsGallery:
+            self.buttonsGallery.destroy()
+            self.buttonsGallery = None
+        self.label = Label(self, padx=20, pady=10)
+        self.label.grid(row=0, column=0)
+        self.buttonsViewer = Frame(self)
+        self.buttonsViewer.grid(row=1, column=0)
+        self.image = image.Image(self.label)
+        self.update()
+        self.updateViewer()
+
     def __init__(self):
         super(App, self).__init__()
 
         self.config = config.Config()
+        self.title(self.config['name']['value'])
+        self.geometry("%dx%d" % (self.config['width']['value'], self.config['height']['value']))
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        self.label = Label(self, padx=20, pady=10)
-        self.label.grid(row=0, column=0)
+        self.gallery = None # frame containing images in GALLERY mode
+        self.label = None # label containing the image in VIEWER Mode
+        self.buttonsGallery = None # frame containing gallery buttons
+        self.buttonsViewer = None # frame containing viewer buttons
 
-        self.buttons = Frame(self)
-        self.buttons.grid(row=1, column=0)
-
-        self.update()
-
-        self.image = image.Image(self.label)
-
-        self.updateViewer()
-        self.bindEvents()
+        self.initGallery()
 
 
 if __name__ == "__main__":

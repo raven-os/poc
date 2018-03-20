@@ -26,6 +26,11 @@ class Image():
             self.imageTk = PIL.ImageTk.PhotoImage(self.image)
         self.label.config(image=self.imageTk, bg="#000000")
 
+    def _setSizeUnsafe(self, width, height):
+        self.image = self.image.resize((width, height), PIL.Image.ANTIALIAS)
+        self.backup = self.image.copy()
+        self.update()
+
     def setDefaultZoomAndLimits(self, width, height):
         if self.image.width >= self.image.height:
             self.min = width * -1

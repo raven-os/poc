@@ -42,20 +42,25 @@ class Image():
             (nwidth, nheight) = self.zoomRatioHeight(height)
         self.image = self.image.resize((nwidth, nheight), PIL.Image.ANTIALIAS)
         self.backup = self.image.copy()
+        self.zooming = 0
         self.update()
 
     def zoomRatioWidth(self, new_width):
-        if new_width < 0:
-            new_width = 0
+        if new_width <= 0:
+            new_width = 1
         wpercent = (new_width / float(self.backup.width))
         hsize = int((float(self.backup.height) * float(wpercent)))
+        if hsize <= 0:
+            hsize = 1
         return (new_width, hsize)
 
     def zoomRatioHeight(self, new_height):
-        if new_height < 0:
-            new_height = 0
+        if new_height <= 0:
+            new_height = 1
         hpercent = (new_height / float(self.backup.height))
         wsize = int((float(self.backup.width) * float(hpercent)))
+        if wsize <= 0:
+            wsize = 1
         return (wsize, new_height)
 
     def zoomIn(self, percent=10):

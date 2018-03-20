@@ -48,6 +48,8 @@ class App(Tk):
         self.listImage = []
         for img in self.list:
             label = Label(self.gallery.scrollwindow)
+            label.bind("<Button-1>", lambda evt, i=img: self.galleryImageClick(self.dir + "/" + i))
+
             label.grid(row=row, column=col, padx=10, pady=10)
             self.listLabel.append(label)
             col += 1
@@ -59,6 +61,12 @@ class App(Tk):
             im._setSizeUnsafe(self.imgWidth, self.imgWidth)
             self.listImage.append(im)
 
+    def galleryImageClick(self, filename):
+        self.switchMode()
+        self.image.open(filename)
+        (_, _, width, height) = self.bbox(0, 0)
+        self.image.setDefaultZoomAndLimits(width, height)
+        self.findImageList(filename)
 
 
     def navigate(self, i):
@@ -175,8 +183,10 @@ class App(Tk):
 
     def switchMode(self):
         if self.mode == Mode.GALLERY:
+            self.gallery._unbound_to_mousewheel(None)
             self.initViewer()
         elif self.mode == Mode.VIEWER:
+            self.unbindEvents()
             self.initGallery()
 
     def initGallery(self):

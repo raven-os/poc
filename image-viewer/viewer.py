@@ -8,8 +8,31 @@ import config
 from communication import startCom, stopCom
 
 import math
+import os
+import glob
+import re
 
 class App(Tk):
+
+    def findImageList(self, filename):
+        self.dir = os.path.dirname(filename)
+        self.list = []
+        self.listIndex = 0
+        types = ("*.jpeg", "*.jpg", "*.png", "*.gif", "*.bmp")
+        for file in os.listdir(self.dir):
+            if re.match(".*\.jpeg|.*\.jpg|.*\.png|.*\.gif|.*\.bmp", file):
+                self.list.append(file)
+                if (self.dir +"/" + file == filename):
+                    self.listIndex = len(self.list) -1
+
+    def navigate(self, i):
+        if len(self.list) < 2:
+            return
+        self.listIndex = (self.listIndex + i) % len(self.list)
+        self.image.open(self.dir + "/" + self.list[self.listIndex])
+        (_, _, width, height) = self.bbox(0, 0)
+        self.image.setDefaultZoomAndLimits(width, height)
+
 
     def open(self):
         ftypes = [
@@ -25,6 +48,7 @@ class App(Tk):
             self.image.open(filename)
             (_, _, width, height) = self.bbox(0, 0)
             self.image.setDefaultZoomAndLimits(width, height)
+            self.findImageList(filename)
 
     def ask_preferencies(self, b):
         if not "should ask" in self.config[b]:
@@ -69,6 +93,8 @@ class App(Tk):
             "top": TOP,
             "bottom": BOTTOM
         }
+        Button(self.buttons, text="->", command=lambda: self.navigate(1)).pack(side=RIGHT)
+        Button(self.buttons, text="<-", command=lambda:self.navigate(-1)).pack(side=LEFT)
 
         for elem in self.config:
             button = self.getButton(elem)

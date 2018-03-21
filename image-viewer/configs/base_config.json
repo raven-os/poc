@@ -25,32 +25,60 @@
       "direction": ["up", "down"]
     }
   },
+  "<-": {
+    "function": "prev",
+    "display": "viewer",
+    "type": "button",
+    "side" : "left",
+    "level": 0
+  },
+  "->": {
+    "function": "next",
+    "display": "viewer",
+    "type": "button",
+    "side" : "right",
+    "level": 0
+  },
   "↶": {
     "function": "rotate_left",
-    "display": true,
+    "display": "viewer",
     "type": "button",
     "side" : "left",
     "level": 0
   },
   "↷" : {
     "function": "rotate_right",
-    "display": true,
+    "display": "viewer",
     "type": "button",
     "side" : "right",
     "level": 0
   },
   "Open file": {
     "function": "open",
-    "display": true,
+    "display": "viewer",
     "type": "button",
     "side" : "left",
     "level": 0
   },
   "Save file": {
     "function": "save",
-    "display": true,
+    "display": "viewer",
     "type": "button",
     "side" : "right",
+    "level": 0
+  },
+  "Gallery": {
+    "function": "gallery",
+    "display": "viewer",
+    "type": "button",
+    "side": "right",
+    "level": 0
+  },
+  "Viewer": {
+    "function": "viewer",
+    "display": "gallery",
+    "type": "button",
+    "side": "left",
     "level": 0
   }
 }

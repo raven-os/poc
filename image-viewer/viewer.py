@@ -156,19 +156,8 @@ class App(Tk):
             item.destroy()
         for item in self.buttonsGallery.winfo_children():
             item.destroy()
-        Button(self.buttonsGallery, text="Go to Viewer", command=self.switchMode).pack(side=LEFT)# need config
-        self.displayGallery()
-
-    def updateViewer(self):
-        self.title(self.config['name']['value'])
-        self.geometry("%dx%d" % (self.config['width']['value'], self.config['height']['value']))
-
-
         buttons_function_ptr = {
-            "open": self.open,
-            "save": self.image.save,
-            "rotate_left": lambda: self.image.rotate(90),
-            "rotate_right": lambda: self.image.rotate(-90)
+            "viewer": self.switchMode
         }
         buttons_side_ptr = {
             "left": LEFT,
@@ -176,22 +165,45 @@ class App(Tk):
             "top": TOP,
             "bottom": BOTTOM
         }
-        Button(self.buttonsViewer, text="Go to Gallery", command=self.switchMode).pack(side=LEFT)# need config
-        Button(self.buttonsViewer, text="->", command=lambda: self.navigate(1)).pack(side=RIGHT)# need config
-        Button(self.buttonsViewer, text="<-", command=lambda:self.navigate(-1)).pack(side=LEFT)# need config
 
         for elem in self.config:
-            button = self.getButton(elem)
+            button = self.getButton(self.buttonsGallery, elem)
 
-            if not button and "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"]:
+            if not button and "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"] == "gallery":
+                Button(self.buttonsGallery, text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
+            elif button and "display" in self.config[elem] and self.config[elem]["display"] != "viewer":
+                button.destroy()
+        self.displayGallery()
+
+    def updateViewer(self):
+        buttons_function_ptr = {
+            "open": self.open,
+            "save": self.image.save,
+            "rotate_left": lambda: self.image.rotate(90),
+            "rotate_right": lambda: self.image.rotate(-90),
+            "next": lambda: self.navigate(1),
+            "prev": lambda: self.navigate(-1),
+            "gallery": self.switchMode
+        }
+        buttons_side_ptr = {
+            "left": LEFT,
+            "right": RIGHT,
+            "top": TOP,
+            "bottom": BOTTOM
+        }
+
+        for elem in self.config:
+            button = self.getButton(self.buttonsViewer, elem)
+
+            if not button and "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"] == "viewer":
                 Button(self.buttonsViewer, text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
-            elif button and "display" in self.config[elem] and not self.config[elem]["display"]:
+            elif button and "display" in self.config[elem] and self.config[elem]["display"] != "viewer":
                 button.destroy()
         self.image.update()
         self.bindEvents()
 
-    def getButton(self, text):
-        for button in self.buttonsViewer.winfo_children():
+    def getButton(self, container, text):
+        for button in container.winfo_children():
             if button['text'] == text:
                 return button
         return None

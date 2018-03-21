@@ -18,5 +18,19 @@
       "direction": "up",
       "type": "other",
       "level": 0
+    },
+    "Save file": {
+      "function": "save",
+      "display": "none",
+      "type": "button",
+      "side" : "right",
+      "level": 0
+    },
+    "Open file": {
+      "function": "open",
+      "display": "none",
+      "type": "button",
+      "side" : "right",
+      "level": 0
     }
 }

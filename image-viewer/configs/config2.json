@@ -9,18 +9,14 @@
       "value": 900
     },
     "gallery_miniature_size": {
-      "value": 250
+      "value": 260
+    },
+    "image_directory": {
+      "value": "/img"
     },
     "Scroll": {
       "direction": "up",
       "type": "other",
-      "level": 0
-    },
-    "Open file": {
-      "function": "open",
-      "display": false,
-      "type": "button",
-      "side" : "right",
       "level": 0
     }
 }

@@ -9,7 +9,13 @@
     "value": 400
   },
   "gallery_miniature_size": {
-    "value": 70
+    "value": 95
+  },
+  "base_path": {
+    "value": "~"
+  },
+  "image_directory": {
+    "value": "/Downloads"
   },
   "Scroll": {
     "direction": "up",

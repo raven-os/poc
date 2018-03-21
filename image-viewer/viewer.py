@@ -13,7 +13,7 @@ import glob
 import re
 from enum import Enum
 
-from pathlib import Path
+from os.path import expanduser
 
 from scrolledWindow import ScrolledWindow
 
@@ -37,8 +37,8 @@ class App(Tk):
                     self.listIndex = len(self.list) -1
 
     def displayGallery(self):
-        self.findImageList(str(Path.home()) + "/Downloads/kek")
-        (_, _, width, height) = self.bbox(0, 0)
+        self.findImageList(expanduser(self.config["base_path"]["value"]) + self.config["image_directory"]["value"] + "/")
+        (_, _, width, _) = self.bbox(0, 0)
 
         imageWidth = self.config["gallery_miniature_size"]["value"]
         #self.imgWidth = math.floor((width - self.column * 2 * 11) / self.column) - 2
@@ -46,7 +46,6 @@ class App(Tk):
         if (imageWidth + 20) * self.column + 10 > width:
             self.column -= 1
         #calcul fill blank empty end line
-
         col = 0
         row = 0
         self.listLabel = []
@@ -66,6 +65,25 @@ class App(Tk):
             im._setSizeUnsafe(imageWidth, imageWidth)
             self.listImage.append(im)
 
+    def updateGalleryGrid(self, event):
+        (_, _, width, _) = self.bbox(0, 0)
+        imageWidth = self.config["gallery_miniature_size"]["value"]
+        self.column = math.ceil((width - 15) / (imageWidth + 20 + 16))
+        if (imageWidth + 20) * self.column + 10 > width:
+            self.column -= 1
+        col = 0
+        row = 0
+        for l in self.listLabel:
+            for children in self.gallery.scrollwindow.children.values():
+                if children == l:
+                    info = children.grid_info()
+                    if info['row'] != row or info['column'] != col:
+                        l.grid(row=row, column=col, padx=10, pady=10)
+            col += 1
+            if col >= self.column:
+                row += 1
+                col = 0
+
     def galleryImageClick(self, filename):
         self.switchMode()
         self.image.open(filename)
@@ -82,7 +100,6 @@ class App(Tk):
         (_, _, width, height) = self.bbox(0, 0)
         self.image.setDefaultZoomAndLimits(width, height)
 
-
     def open(self):
         ftypes = [
             ("Images", "*.jpeg *.jpg *.png *.png *.gif *.bmp"),
@@ -92,7 +109,7 @@ class App(Tk):
             ("GIF", "*.gif"),
             ("BMP", "*.bmp")
         ]
-        filename = filedialog.askopenfilename(initialdir="~/Downloads", filetypes = ftypes)
+        filename = filedialog.askopenfilename(initialdir=self.config["base_path"]["value"] + self.config["image_directory"]["value"], filetypes = ftypes)
         if filename:
             self.image.open(filename)
             (_, _, width, height) = self.bbox(0, 0)
@@ -126,7 +143,9 @@ class App(Tk):
         self.config = config
         self.title(self.config['name']['value'])
         self.geometry("%dx%d" % (self.config['width']['value'], self.config['height']['value']))
+        self.updateInner()
 
+    def updateInner(self):
         if self.mode == Mode.GALLERY:
             self.updateGallery()
         elif self.mode == Mode.VIEWER:
@@ -139,7 +158,6 @@ class App(Tk):
             item.destroy()
         Button(self.buttonsGallery, text="Go to Viewer", command=self.switchMode).pack(side=LEFT)# need config
         self.displayGallery()
-
 
     def updateViewer(self):
         self.title(self.config['name']['value'])
@@ -161,7 +179,6 @@ class App(Tk):
         Button(self.buttonsViewer, text="Go to Gallery", command=self.switchMode).pack(side=LEFT)# need config
         Button(self.buttonsViewer, text="->", command=lambda: self.navigate(1)).pack(side=RIGHT)# need config
         Button(self.buttonsViewer, text="<-", command=lambda:self.navigate(-1)).pack(side=LEFT)# need config
-
 
         for elem in self.config:
             button = self.getButton(elem)
@@ -217,6 +234,7 @@ class App(Tk):
         self.listLabel = []
         self.update()
         self.updateGallery()
+        self.gallery.bind("<Configure>", self.updateGalleryGrid)
 
     def initViewer(self):
         self.mode = Mode.VIEWER
@@ -248,7 +266,6 @@ class App(Tk):
         self.label = None # label containing the image in VIEWER Mode
         self.buttonsGallery = None # frame containing gallery buttons
         self.buttonsViewer = None # frame containing viewer buttons
-        self.imageWidth = 60
         self.initGallery()
 
 

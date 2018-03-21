@@ -8,6 +8,9 @@
   "height": {
     "value": 400
   },
+  "gallery_miniature_size": {
+    "value": 70
+  },
   "Scroll": {
     "direction": "up",
     "type": "other",

@@ -38,10 +38,15 @@ class App(Tk):
 
     def displayGallery(self):
         self.findImageList(str(Path.home()) + "/Downloads/kek")
-        self.column = 4
-
         (_, _, width, height) = self.bbox(0, 0)
-        self.imgWidth = math.floor((width - self.column * 2 * 11) / self.column) - 2
+
+        imageWidth = self.config["gallery_miniature_size"]["value"]
+        #self.imgWidth = math.floor((width - self.column * 2 * 11) / self.column) - 2
+        self.column = math.ceil((width - 15) / (imageWidth + 20 + 16))
+        if (imageWidth + 20) * self.column + 10 > width:
+            self.column -= 1
+        #calcul fill blank empty end line
+
         col = 0
         row = 0
         self.listLabel = []
@@ -53,12 +58,12 @@ class App(Tk):
             label.grid(row=row, column=col, padx=10, pady=10)
             self.listLabel.append(label)
             col += 1
-            if col >= 4:
+            if col >= self.column:
                 row += 1
                 col = 0
             im = image.Image(label)
             im.open(self.dir + "/" + img)
-            im._setSizeUnsafe(self.imgWidth, self.imgWidth)
+            im._setSizeUnsafe(imageWidth, imageWidth)
             self.listImage.append(im)
 
     def galleryImageClick(self, filename):
@@ -119,12 +124,19 @@ class App(Tk):
 
     def updateConfig(self, config):
         self.config = config
+        self.title(self.config['name']['value'])
+        self.geometry("%dx%d" % (self.config['width']['value'], self.config['height']['value']))
+
         if self.mode == Mode.GALLERY:
             self.updateGallery()
         elif self.mode == Mode.VIEWER:
             self.updateViewer()
 
     def updateGallery(self):
+        for item in self.gallery.scrollwindow.winfo_children():
+            item.destroy()
+        for item in self.buttonsGallery.winfo_children():
+            item.destroy()
         Button(self.buttonsGallery, text="Go to Viewer", command=self.switchMode).pack(side=LEFT)# need config
         self.displayGallery()
 
@@ -202,6 +214,7 @@ class App(Tk):
         self.gallery.grid(row=0, column=0)
         self.buttonsGallery = Frame(self)
         self.buttonsGallery.grid(row=1, column=0)
+        self.listLabel = []
         self.update()
         self.updateGallery()
 
@@ -235,7 +248,7 @@ class App(Tk):
         self.label = None # label containing the image in VIEWER Mode
         self.buttonsGallery = None # frame containing gallery buttons
         self.buttonsViewer = None # frame containing viewer buttons
-
+        self.imageWidth = 60
         self.initGallery()
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import image
-from tkinter import Tk, Toplevel, Frame, filedialog, StringVar, Button, Radiobutton, Label, LEFT, RIGHT, TOP, BOTTOM, BOTH, W, ttk, Scrollbar, VERTICAL, NE, SE, Canvas
+from tkinter import Tk, Toplevel, Frame, filedialog, StringVar, Button, Radiobutton, Label, LEFT, RIGHT, TOP, BOTTOM, BOTH, W, ttk, Scrollbar, VERTICAL, NE, SE, Canvas, Message
 import tkinter as tk
 import config
 
@@ -122,24 +122,27 @@ class App(Tk):
     def ask_preferencies(self, b):
         if not "should ask" in self.config[b]:
             return
-        window = Toplevel(self)
-        window.title("Select preferencies")
-        window.geometry("300x300")
+        popup = Toplevel(self)
+        popup.title("")
+        popup.geometry("200x200")
+        Message(popup, text="Select options for %s" % b).pack()
         v = {}
         for key in self.config[b]["should ask"]:
             frame = Frame(window, background=self.config['color']['value'])
             v[key] = StringVar()
             v[key].set(self.config[b]["should ask"][key][0])
             for elem in self.config[b]["should ask"][key]:
-                Radiobutton(frame, text=elem, variable=v[key], value=elem).pack(anchor=W)
-            frame.pack()
-        window.mainloop()
+                Radiobutton(pframe, text=elem, variable=v[key], value=elem).pack(anchor=W)
+            pframe.pack()
+        del self.config[b]["should ask"]
+        def _test(): # quit then destroy windows
+            popup.quit()
+            popup.destroy()
+        Button(popup, text="OK", command=_test).pack()
+        popup.protocol('WM_DELETE_WINDOW', _test)
+        popup.mainloop()
         for elem in v:
             self.config[b][elem] = v[elem].get()
-
-        print(self.config[b])
-        del self.config[b]["should ask"]
-        print(self.config[b])
         self.config.put(b, self.config[b])
 
     def updateConfig(self, config):

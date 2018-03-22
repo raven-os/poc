@@ -30,6 +30,8 @@ class ScrolledWindow(tk.Frame):
 
         self.parent = parent
 
+        self.is_updating = False # used in order to ask preferencies only once
+
         # creating a scrollbars
         #self.xscrlbr = ttk.Scrollbar(self.parent, orient = 'horizontal')
         #self.xscrlbr.grid(column = 0, row = 1, sticky = 'ew', columnspan = 2)
@@ -87,10 +89,20 @@ class ScrolledWindow(tk.Frame):
         self.canv.unbind_all("<Button-5>")
 
     def _on_mousewheel(self, event):
+        if not self.is_updating:
+            self.is_updating = True
+            self.parent.ask_preferencies("Scroll")
+            self.is_updating = False
         if event.num == 4:
-            self.canv.yview_scroll(-1, "units")
+            if self.parent.config["Scroll"]["direction"] == "up":
+                self.canv.yview_scroll(-1, "units")
+            elif self.parent.config["Scroll"]["direction"] == "down":
+                self.canv.yview_scroll(1, "units")
         elif event.num == 5:
-            self.canv.yview_scroll(1, "units")
+            if self.parent.config["Scroll"]["direction"] == "up":
+                self.canv.yview_scroll(1, "units")
+            elif self.parent.config["Scroll"]["direction"] == "down":
+                self.canv.yview_scroll(-1, "units")
         #self.canv.yview_scroll(int(-1*(event.delta/120)), "units")
 
     def _configure_window(self, event):

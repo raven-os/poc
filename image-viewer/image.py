@@ -97,7 +97,7 @@ class Image():
         if self.image:
             self.f.setImage(self.image)
             if filter_type == "negatif":
-                self.image = self.f.blackAndWhite()
+                self.image = self.f.negatif()
             elif filter_type == "blackAndWhite":
                 self.image = self.f.blackAndWhite()
             elif filter_type == "transpose":

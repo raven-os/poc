@@ -25,9 +25,11 @@ def readFifo(app):
             if not stop and len(data) > 0:
                 print("Read: {0}".format(data))
                 if (b'1' in data):
-                    app.updateConfig(config.Config(config = "configs/config1.json"))
+                    app.queue.put("configs/config1.json")
+                    #app.updateConfig(config.Config(config = "configs/config1.json"))
                 elif (b'2' in data):
-                    app.updateConfig(config.Config(config = "configs/config2.json"))
+                    app.queue.put("configs/config2.json")
+                    #app.updateConfig(config.Config(config = "configs/config2.json"))
 
             sleep(0.1)
         except OSError as oe:

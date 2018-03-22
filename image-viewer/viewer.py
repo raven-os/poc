@@ -15,6 +15,10 @@ from enum import Enum
 import PIL.ImageTk
 import PIL.Image
 
+from threading import Thread
+from queue import Queue
+from queue import Empty
+
 
 from os.path import expanduser
 
@@ -274,6 +278,13 @@ class App(Tk):
         self.update()
         self.updateViewer()
 
+    def read_queue(self):
+        try:
+            tmp = self.queue.get_nowait()
+            self.updateConfig(config.Config(config = tmp))
+        except Empty:
+            pass
+        self.after(100, self.read_queue)
 
     def __init__(self):
         super().__init__()
@@ -293,6 +304,8 @@ class App(Tk):
         self.buttonsViewer = None # frame containing viewer buttons
         self.imgButton = {}
 
+        self.queue = Queue()
+        self.after(100, self.read_queue)
 
         self.initGallery()
 

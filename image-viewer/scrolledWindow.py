@@ -91,17 +91,17 @@ class ScrolledWindow(tk.Frame):
     def _on_mousewheel(self, event):
         if not self.is_updating:
             self.is_updating = True
-            self.parent.ask_preferencies("Scroll")
+            self.parent.ask_preferencies("Scrolling")
             self.is_updating = False
         if event.num == 4:
-            if self.parent.config["Scroll"]["direction"] == "up":
+            if self.parent.config["Scrolling"]["direction"] == "normal":
                 self.canv.yview_scroll(-1, "units")
-            elif self.parent.config["Scroll"]["direction"] == "down":
+            elif self.parent.config["Scrolling"]["direction"] == "reverse":
                 self.canv.yview_scroll(1, "units")
         elif event.num == 5:
-            if self.parent.config["Scroll"]["direction"] == "up":
+            if self.parent.config["Scrolling"]["direction"] == "normal":
                 self.canv.yview_scroll(1, "units")
-            elif self.parent.config["Scroll"]["direction"] == "down":
+            elif self.parent.config["Scrolling"]["direction"] == "reverse":
                 self.canv.yview_scroll(-1, "units")
         #self.canv.yview_scroll(int(-1*(event.delta/120)), "units")
 

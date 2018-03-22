@@ -1,96 +1,97 @@
 {
-  "name": {
-    "value": "Image Viewer"
-  },
-  "color": {
-    "background": "darkgrey",
-    "foreground": "white"
-  },
-  "width": {
-    "value": 500
-  },
-  "height": {
-    "value": 400
-  },
-  "gallery_miniature_size": {
-    "value": 95
-  },
-  "base_path": {
-    "value": "~"
-  },
-  "image_directory": {
-    "value": "/Downloads"
-  },
-  "Scroll": {
-    "direction": "up",
-    "type": "other",
-    "level": 0,
-    "should ask": {
-      "direction": ["up", "down"]
+    "name": {
+	"value": "Image Viewer"
+    },
+    "color": {
+      "background": "darkgrey",
+      "foreground": "white"
+    },
+    "width": {
+	"value": 500
+    },
+    "height": {
+	"value": 400
+    },
+    "gallery_miniature_size": {
+	"value": 95
+    },
+    "base_path": {
+	"value": "~"
+    },
+    "image_directory": {
+	"value": "/Downloads"
+    },
+    "Scrolling": {
+	"direction": "normal",
+	"type": "other",
+	"message": "scrolling direction",
+	"level": 0,
+	"should ask": {
+	    "direction": ["normal", "reverse"]
+	}
+    },
+    "<-": {
+	"function": "prev",
+	"image": "img/prev.png",
+	"display": "viewer",
+	"type": "button",
+	"side" : "left",
+	"level": 0
+    },
+    "->": {
+	"function": "next",
+	"image": "img/next.png",
+	"display": "viewer",
+	"type": "button",
+	"side" : "right",
+	"level": 0
+    },
+    "↶": {
+	"function": "rotate_left",
+	"image": "img/rleft.png",
+	"display": "viewer",
+	"type": "button",
+	"side" : "left",
+	"level": 0
+    },
+    "↷" : {
+	"function": "rotate_right",
+	"image": "img/rright.png",
+	"display": "viewer",
+	"type": "button",
+	"side" : "right",
+	"level": 0
+    },
+    "Open file": {
+	"function": "open",
+	"image": "img/open.png",
+	"display": "viewer",
+	"type": "button",
+	"side" : "left",
+	"level": 0
+    },
+    "Save file": {
+	"function": "save",
+	"image": "img/save.png",
+	"display": "viewer",
+	"type": "button",
+	"side" : "right",
+	"level": 0
+    },
+    "Gallery": {
+	"function": "gallery",
+	"image": "img/gallery.png",
+	"display": "viewer",
+	"type": "button",
+	"side": "right",
+	"level": 0
+    },
+    "Viewer": {
+	"function": "viewer",
+	"image": "img/viewer.png",
+	"display": "gallery",
+	"type": "button",
+	"side": "left",
+	"level": 0
     }
-  },
-  "<-": {
-    "function": "prev",
-    "image": "img/prev.png",
-    "display": "viewer",
-    "type": "button",
-    "side" : "left",
-    "level": 0
-  },
-  "->": {
-    "function": "next",
-    "image": "img/next.png",
-    "display": "viewer",
-    "type": "button",
-    "side" : "right",
-    "level": 0
-  },
-  "↶": {
-    "function": "rotate_left",
-    "image": "img/rleft.png",
-    "display": "viewer",
-    "type": "button",
-    "side" : "left",
-    "level": 0
-  },
-  "↷" : {
-    "function": "rotate_right",
-    "image": "img/rright.png",
-    "display": "viewer",
-    "type": "button",
-    "side" : "right",
-    "level": 0
-  },
-  "Open file": {
-    "function": "open",
-    "image": "img/open.png",
-    "display": "viewer",
-    "type": "button",
-    "side" : "left",
-    "level": 0
-  },
-  "Save file": {
-    "function": "save",
-    "image": "img/save.png",
-    "display": "viewer",
-    "type": "button",
-    "side" : "right",
-    "level": 0
-  },
-  "Gallery": {
-    "function": "gallery",
-    "image": "img/gallery.png",
-    "display": "viewer",
-    "type": "button",
-    "side": "right",
-    "level": 0
-  },
-  "Viewer": {
-    "function": "viewer",
-    "image": "img/viewer.png",
-    "display": "gallery",
-    "type": "button",
-    "side": "left",
-    "level": 0
-  }
 }

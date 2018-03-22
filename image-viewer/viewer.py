@@ -123,9 +123,9 @@ class App(Tk):
         if not "should ask" in self.config[b]:
             return
         popup = Toplevel(self)
-        popup.title("")
-        popup.geometry("200x200")
-        Message(popup, text="Select options for %s" % b).pack()
+        popup.title("Select options for %s" % b)
+        popup.geometry("400x200")
+        Message(popup, text=self.config[b]["message"] ,width=100).pack()
         v = {}
         for key in self.config[b]["should ask"]:
             frame = Frame(window, background=self.config['color']['value'])

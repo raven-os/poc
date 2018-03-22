@@ -146,6 +146,8 @@ class App(Tk):
         self.config = config
         self.title(self.config['name']['value'])
         self.geometry("%dx%d" % (self.config['width']['value'], self.config['height']['value']))
+        self.tk_setPalette(background=self.config["color"]["background"],
+                           foreground=self.config["color"]["foreground"])
         self.updateInner()
 
     def updateInner(self):
@@ -155,7 +157,6 @@ class App(Tk):
             self.updateViewer()
 
     def updateGallery(self):
-
         buttons_function_ptr = {
             "viewer": self.switchMode
         }
@@ -171,6 +172,7 @@ class App(Tk):
             item.destroy()
         for item in self.buttonsGallery.winfo_children():
             item.destroy()
+        self.gallery.update_colors()
         for elem in self.config:
 
             if "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"] == "gallery":

@@ -46,9 +46,7 @@ class ScrolledWindow(tk.Frame):
         #self.xscrlbr.config(command = self.canv.xview)
         self.yscrlbr.config(command = self.canv.yview)
 
-        # used for portability between tk and ttk
-        test_style = ttk.Style()
-        test_style.configure("ScrollWindow.TLabel", foreground=self.parent.config["color"]["foreground"], background=self.parent.config["color"]["background"])
+        self.update_colors()
         # creating a frame to inserto to canvas
         self.scrollwindow = ttk.Frame(self.parent, style="ScrollWindow.TLabel")
 
@@ -65,6 +63,11 @@ class ScrolledWindow(tk.Frame):
         self.scrollwindow.bind('<Leave>', self._unbound_to_mousewheel)
 
         return
+
+    def update_colors(self):
+        # used for portability between tk and ttk
+        test_style = ttk.Style()
+        test_style.configure("ScrollWindow.TLabel", foreground=self.parent.config["color"]["foreground"], background=self.parent.config["color"]["background"])
 
     def destroyAll(self):
         self.yscrlbr.destroy()

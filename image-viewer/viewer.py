@@ -132,7 +132,7 @@ class App(Tk):
         Message(popup, text=self.config[b]["message"] ,width=100).pack()
         v = {}
         for key in self.config[b]["should ask"]:
-            frame = Frame(window, background=self.config['color']['value'])
+            pframe = Frame(popup)
             v[key] = StringVar()
             v[key].set(self.config[b]["should ask"][key][0])
             for elem in self.config[b]["should ask"][key]:

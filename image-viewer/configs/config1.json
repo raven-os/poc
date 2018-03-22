@@ -1,10 +1,1 @@
-{
-    "name": {
-	"value": "Image Viewer profile 1"
-    },
-    "color":
-    {
-	"background": "white",
-	"foreground": "black"
-    }
-}
+{"name": {"value": "Image Viewer profile 1"}, "color": {"background": "white", "foreground": "black"}, "Scrolling": {"direction": "normal", "type": "other", "message": "scrolling direction", "level": 0}}

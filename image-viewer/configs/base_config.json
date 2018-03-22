@@ -4,7 +4,7 @@
     },
     "color": {
       "background": "darkgrey",
-      "foreground": "white"
+      "foreground": "black"
     },
     "width": {
 	"value": 500

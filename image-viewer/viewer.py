@@ -200,7 +200,10 @@ class App(Tk):
             "rotate_right": lambda: self.image.rotate(-90),
             "next": lambda: self.navigate(1),
             "prev": lambda: self.navigate(-1),
-            "gallery": self.switchMode
+            "gallery": self.switchMode,
+            "negatif": lambda: self.image.filters("negatif"),
+            "transpose": lambda: self.image.filters("transpose"),
+            "blackAndWhite": lambda: self.image.filters("blackAndWhite")
         }
         buttons_side_ptr = {
             "left": LEFT,
@@ -308,7 +311,6 @@ class App(Tk):
         self.after(100, self.read_queue)
 
         self.initGallery()
-
 
 if __name__ == "__main__":
     app = App()

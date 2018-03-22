@@ -1,5 +1,6 @@
 import PIL.Image
 import PIL.ImageTk
+from filters import Filters
 
 class Image():
     def __init__(self, label):
@@ -11,6 +12,7 @@ class Image():
         self.zooming = 0 # zoom in range [min..max]
         self.min = 0 # minimum size of image
         self.max = 0 # maximum size of image
+        self.f = Filters();
 
     def open(self, filename):
         self.filename = filename
@@ -90,3 +92,14 @@ class Image():
     def save(self):
         if self.image:
             self.image.save(self.filename)
+
+    def filters(self, filter_type):
+        if self.image:
+            self.f.setImage(self.image)
+            if filter_type == "negatif":
+                self.image = self.f.blackAndWhite()
+            elif filter_type == "blackAndWhite":
+                self.image = self.f.blackAndWhite()
+            elif filter_type == "transpose":
+                self.image = self.f.transpose()
+            self.update()

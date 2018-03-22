@@ -93,5 +93,26 @@
 	"type": "button",
 	"side": "left",
 	"level": 0
-    }
+   },
+  "Negatif Filter": {
+    "function": "negatif",
+    "display": "viewer",
+    "type": "button",
+    "side" : "right",
+    "level": 1
+  },
+  "Transpose Filter": {
+    "function": "transpose",
+    "display": "viewer",
+    "type": "button",
+    "side" : "right",
+    "level": 1
+  },
+  "Black And White Filter": {
+    "function": "blackAndWhite",
+    "display": "viewer",
+    "type": "button",
+    "side" : "right",
+    "level": 1
+  }
 }

@@ -96,6 +96,7 @@
    },
   "Negatif Filter": {
     "function": "negatif",
+    "image": "img/negative.png",
     "display": "viewer",
     "type": "button",
     "side" : "right",
@@ -103,6 +104,7 @@
   },
   "Transpose Filter": {
     "function": "transpose",
+    "image": "img/transpose.png",
     "display": "viewer",
     "type": "button",
     "side" : "right",
@@ -110,6 +112,7 @@
   },
   "Black And White Filter": {
     "function": "blackAndWhite",
+    "image": "img/contrast.png",
     "display": "viewer",
     "type": "button",
     "side" : "right",

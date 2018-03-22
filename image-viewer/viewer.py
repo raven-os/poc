@@ -12,6 +12,9 @@ import os
 import glob
 import re
 from enum import Enum
+import PIL.ImageTk
+import PIL.Image
+
 
 from os.path import expanduser
 
@@ -152,10 +155,7 @@ class App(Tk):
             self.updateViewer()
 
     def updateGallery(self):
-        for item in self.gallery.scrollwindow.winfo_children():
-            item.destroy()
-        for item in self.buttonsGallery.winfo_children():
-            item.destroy()
+
         buttons_function_ptr = {
             "viewer": self.switchMode
         }
@@ -165,14 +165,22 @@ class App(Tk):
             "top": TOP,
             "bottom": BOTTOM
         }
+        self.findImageList(expanduser(self.config["base_path"]["value"]) + self.config["image_directory"]["value"] + "/")
 
+        for item in self.gallery.scrollwindow.winfo_children():
+            item.destroy()
+        for item in self.buttonsGallery.winfo_children():
+            item.destroy()
         for elem in self.config:
-            button = self.getButton(self.buttonsGallery, elem)
 
-            if not button and "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"] == "gallery":
-                Button(self.buttonsGallery, text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
-            elif button and "display" in self.config[elem] and self.config[elem]["display"] != "viewer":
-                button.destroy()
+            if "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"] == "gallery":
+                if "image" in self.config[elem] and self.config[elem]["image"]:
+                    self.imgButton[elem] = PIL.ImageTk.PhotoImage(PIL.Image.open(self.config[elem]["image"]).resize((30, 30)))
+                else:
+                    self.imgButton[elem] = None
+                if elem == "Viewer" and len(self.list) <= 0:
+                    Button(self.buttonsGallery, image=self.imgButton[elem], text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
+
         self.displayGallery()
 
     def updateViewer(self):
@@ -191,22 +199,19 @@ class App(Tk):
             "top": TOP,
             "bottom": BOTTOM
         }
-
+        for child in self.buttonsViewer.winfo_children():
+            child.destroy()
         for elem in self.config:
-            button = self.getButton(self.buttonsViewer, elem)
 
-            if not button and "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"] == "viewer":
-                Button(self.buttonsViewer, text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
-            elif button and "display" in self.config[elem] and self.config[elem]["display"] != "viewer":
-                button.destroy()
+            if "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"] == "viewer":
+                if "image" in self.config[elem] and self.config[elem]["image"]:
+                    self.imgButton[elem] = PIL.ImageTk.PhotoImage(PIL.Image.open(self.config[elem]["image"]).resize((30, 30)))
+                else:
+                    self.imgButton[elem] = None
+                Button(self.buttonsViewer, image=self.imgButton[elem], text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
+
         self.image.update()
         self.bindEvents()
-
-    def getButton(self, container, text):
-        for button in container.winfo_children():
-            if button['text'] == text:
-                return button
-        return None
 
     def bindEvents(self):
         self.bind("<Button-4>", self.mouse_wheel) # MouseWheel Up
@@ -264,6 +269,7 @@ class App(Tk):
         self.update()
         self.updateViewer()
 
+
     def __init__(self):
         super(App, self).__init__()
 
@@ -278,6 +284,9 @@ class App(Tk):
         self.label = None # label containing the image in VIEWER Mode
         self.buttonsGallery = None # frame containing gallery buttons
         self.buttonsViewer = None # frame containing viewer buttons
+        self.imgButton = {}
+
+
         self.initGallery()
 
 

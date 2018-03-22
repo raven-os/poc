@@ -27,6 +27,7 @@
   },
   "<-": {
     "function": "prev",
+    "image": "img/prev.png",
     "display": "viewer",
     "type": "button",
     "side" : "left",
@@ -34,6 +35,7 @@
   },
   "->": {
     "function": "next",
+    "image": "img/next.png",
     "display": "viewer",
     "type": "button",
     "side" : "right",
@@ -41,6 +43,7 @@
   },
   "↶": {
     "function": "rotate_left",
+    "image": "img/rleft.png",
     "display": "viewer",
     "type": "button",
     "side" : "left",
@@ -48,6 +51,7 @@
   },
   "↷" : {
     "function": "rotate_right",
+    "image": "img/rright.png",
     "display": "viewer",
     "type": "button",
     "side" : "right",
@@ -55,6 +59,7 @@
   },
   "Open file": {
     "function": "open",
+    "image": "img/open.png",
     "display": "viewer",
     "type": "button",
     "side" : "left",
@@ -62,6 +67,7 @@
   },
   "Save file": {
     "function": "save",
+    "image": "img/save.png",
     "display": "viewer",
     "type": "button",
     "side" : "right",
@@ -69,6 +75,7 @@
   },
   "Gallery": {
     "function": "gallery",
+    "image": "img/gallery.png",
     "display": "viewer",
     "type": "button",
     "side": "right",
@@ -76,6 +83,7 @@
   },
   "Viewer": {
     "function": "viewer",
+    "image": "img/viewer.png",
     "display": "gallery",
     "type": "button",
     "side": "left",

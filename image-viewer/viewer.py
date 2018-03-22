@@ -215,6 +215,7 @@ class App(Tk):
             child.destroy()
         for elem in self.config:
 
+            # button handling
             if "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"] == "viewer":
                 if "image" in self.config[elem] and self.config[elem]["image"]:
                     self.imgButton[elem] = PIL.ImageTk.PhotoImage(PIL.Image.open(self.config[elem]["image"]).resize((30, 30), PIL.Image.ANTIALIAS))
@@ -222,6 +223,8 @@ class App(Tk):
                     self.imgButton[elem] = None
                 Button(self.buttonsViewer, borderwidth=0, image=self.imgButton[elem], text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
 
+            if "shortcut" in self.config[elem]:
+                self.bind(self.config[elem]["shortcut"], self.shortcut)
         self.image.update()
         self.bindEvents()
 
@@ -232,6 +235,47 @@ class App(Tk):
     def unbindEvents(self):
         self.unbind("<Button-4>")
         self.unbind("<Button-5>")
+        for elem in self.config:
+            if "shortcut" in self.config[elem]:
+                self.unbind(self.config[elem]["shortcut"])
+
+
+    def shortcut(self, event):
+        def _modifiers(event):
+            modifiers = []
+            if event.state & 1:
+                modifiers.append('Shift')
+            if event.state & 2:
+                modifiers.append('Caps_Lock')
+            if event.state & 4:
+                modifiers.append('Control')
+            if event.state & 8:
+                modifiers.append('Alt_L')
+            if event.state & 10:
+                modifiers.append('Num_Lock')
+            if event.state & 80:
+                modifiers.append('Alt_R')
+            return '-'.join(modifiers)
+        modifiers = _modifiers(event)
+        if len(modifiers) > 0:
+            modifiers += "-"
+        shortcut = "<" + modifiers + event.keysym + ">"
+        buttons_function_ptr = {
+            "open": self.open,
+            "save": self.image.save,
+            "rotate_left": lambda: self.image.rotate(90),
+            "rotate_right": lambda: self.image.rotate(-90),
+            "next": lambda: self.navigate(1),
+            "prev": lambda: self.navigate(-1),
+            "gallery": self.switchMode,
+            "negatif": lambda: self.image.filters("negatif"),
+            "transpose": lambda: self.image.filters("transpose"),
+            "blackAndWhite": lambda: self.image.filters("blackAndWhite")
+        }
+        for elem in self.config:
+            if "shortcut" in self.config[elem] and self.config[elem]["shortcut"] == shortcut:
+                buttons_function_ptr[self.config[elem]['function']]()
+
 
     def mouse_wheel(self, event):
         if (event.num == 4):

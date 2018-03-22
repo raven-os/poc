@@ -4,8 +4,8 @@
     },
     "color":
     {
-	"background": "black",
-	"foreground": "white"
+	"background": "white",
+	"foreground": "black"
     },
     "Scroll": {
 	"direction": "up",

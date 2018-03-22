@@ -3,8 +3,8 @@
     "value": "Image Viewer"
   },
   "color": {
-    "background": "white",
-    "foreground": "black"
+    "background": "darkgrey",
+    "foreground": "white"
   },
   "width": {
     "value": 500

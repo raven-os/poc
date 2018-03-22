@@ -184,7 +184,7 @@ class App(Tk):
 
             if "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"] == "gallery":
                 if "image" in self.config[elem] and self.config[elem]["image"]:
-                    self.imgButton[elem] = PIL.ImageTk.PhotoImage(PIL.Image.open(self.config[elem]["image"]).resize((30, 30)))
+                    self.imgButton[elem] = PIL.ImageTk.PhotoImage(PIL.Image.open(self.config[elem]["image"]).resize((30, 30), PIL.Image.ANTIALIAS))
                 else:
                     self.imgButton[elem] = None
                 if elem == "Viewer" and len(self.list) <= 0:
@@ -214,10 +214,10 @@ class App(Tk):
 
             if "type" in self.config[elem] and self.config[elem]["type"] == "button" and "display" in self.config[elem] and self.config[elem]["display"] == "viewer":
                 if "image" in self.config[elem] and self.config[elem]["image"]:
-                    self.imgButton[elem] = PIL.ImageTk.PhotoImage(PIL.Image.open(self.config[elem]["image"]).resize((30, 30)))
+                    self.imgButton[elem] = PIL.ImageTk.PhotoImage(PIL.Image.open(self.config[elem]["image"]).resize((30, 30), PIL.Image.ANTIALIAS))
                 else:
                     self.imgButton[elem] = None
-                Button(self.buttonsViewer, image=self.imgButton[elem], text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
+                Button(self.buttonsViewer, borderwidth=0, image=self.imgButton[elem], text=elem, command=buttons_function_ptr[self.config[elem]['function']]).pack(side=buttons_side_ptr[self.config[elem]["side"]])
 
         self.image.update()
         self.bindEvents()

@@ -127,7 +127,7 @@ class App(Tk):
         window.geometry("300x300")
         v = {}
         for key in self.config[b]["should ask"]:
-            frame = Frame(window)
+            frame = Frame(window, background=self.config['color']['value'])
             v[key] = StringVar()
             v[key].set(self.config[b]["should ask"][key][0])
             for elem in self.config[b]["should ask"][key]:
@@ -271,11 +271,13 @@ class App(Tk):
 
 
     def __init__(self):
-        super(App, self).__init__()
+        super().__init__()
 
         self.config = config.Config()
         self.title(self.config['name']['value'])
         self.geometry("%dx%d" % (self.config['width']['value'], self.config['height']['value']))
+        self.tk_setPalette(background=self.config["color"]["background"],
+                           foreground=self.config["color"]["foreground"])
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
@@ -292,9 +294,6 @@ class App(Tk):
 
 if __name__ == "__main__":
     app = App()
-    # app.style = ttk.Style()
-    # #('clam', 'alt', 'default', 'classic')
-    # app.style.theme_use("clam")
     startCom(app)
     app.mainloop()
     stopCom()

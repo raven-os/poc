@@ -46,8 +46,11 @@ class ScrolledWindow(tk.Frame):
         #self.xscrlbr.config(command = self.canv.xview)
         self.yscrlbr.config(command = self.canv.yview)
 
+        # used for portability between tk and ttk
+        test_style = ttk.Style()
+        test_style.configure("ScrollWindow.TLabel", foreground=self.parent.config["color"]["foreground"], background=self.parent.config["color"]["background"])
         # creating a frame to inserto to canvas
-        self.scrollwindow = ttk.Frame(self.parent)
+        self.scrollwindow = ttk.Frame(self.parent, style="ScrollWindow.TLabel")
 
         self.canv.create_window(0, 0, window = self.scrollwindow, anchor = 'nw')
 

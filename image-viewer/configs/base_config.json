@@ -2,6 +2,10 @@
   "name": {
     "value": "Image Viewer"
   },
+  "color": {
+    "background": "white",
+    "foreground": "black"
+  },
   "width": {
     "value": 500
   },

@@ -231,6 +231,7 @@ class App(Tk):
     def bindEvents(self):
         self.bind("<Button-4>", self.mouse_wheel) # MouseWheel Up
         self.bind("<Button-5>", self.mouse_wheel) # MouseWheel Daoun
+        self.bind
 
     def unbindEvents(self):
         self.unbind("<Button-4>")
@@ -270,7 +271,9 @@ class App(Tk):
             "gallery": self.switchMode,
             "negatif": lambda: self.image.filters("negatif"),
             "transpose": lambda: self.image.filters("transpose"),
-            "blackAndWhite": lambda: self.image.filters("blackAndWhite")
+            "blackAndWhite": lambda: self.image.filters("blackAndWhite"),
+            "zoomIn": self.image.zoomIn,
+            "zoomOut": self.image.zoomOut
         }
         for elem in self.config:
             if "shortcut" in self.config[elem] and self.config[elem]["shortcut"] == shortcut:

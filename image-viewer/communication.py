@@ -30,7 +30,8 @@ def readFifo(app):
                 elif (b'2' in data):
                     app.queue.put("configs/config2.json")
                     #app.updateConfig(config.Config(config = "configs/config2.json"))
-
+                elif (b'3' in data):
+                    app.queue.put("configs/config3.json")
             sleep(0.1)
         except OSError as oe:
             print(oe)

@@ -1,95 +1,62 @@
 {
   "name": {
-    "value": "Image Viewer"
+    "value": "Image Viewer profile 2"
   },
   "color": {
-    "background": "white",
-    "foreground": "black"
+    "background": "#C1C1C1",
+    "foreground": "#1C1C1C"
   },
   "width": {
-    "value": 900
+    "value": 1300
   },
   "height": {
     "value": 900
   },
   "gallery_miniature_size": {
-    "value": 260
-  },
-  "base_path": {
-    "value": "~"
+    "value": 600
   },
   "image_directory": {
-    "value": "/Downloads"
-  },
-  "Scrolling": {
-    "direction": "normal",
-    "type": "other",
-    "message": "scrolling direction",
-    "level": 0,
-    "should ask": {
-      "direction": ["normal", "reverse"]
-    }
+    "value": "/img"
   },
   "<-": {
     "function": "prev",
-    "image": "img/prev.png",
-    "display": "viewer",
-    "type": "button",
-    "side" : "left",
+    "display": "None",
     "shortcut": "<Left>",
     "level": 0
   },
   "->": {
     "function": "next",
-    "image": "img/next.png",
-    "display": "viewer",
-    "type": "button",
-    "side" : "right",
+    "display": "None",
     "shortcut": "<Right>",
     "level": 0
   },
   "↶": {
     "function": "rotate_left",
-    "image": "img/rleft.png",
-    "display": "viewer",
-    "type": "button",
-    "side" : "left",
+    "display": "None",
     "shortcut": "<Control-l>",
     "level": 0
   },
   "↷" : {
     "function": "rotate_right",
-    "image": "img/rright.png",
-    "display": "viewer",
-    "type": "button",
-    "side" : "right",
+    "display": "None",
     "shortcut": "<Control-r>",
     "level": 0
   },
   "Open file": {
     "function": "open",
-    "image": "img/open.png",
-    "display": "viewer",
-    "type": "button",
-    "side" : "left",
+    "display": "None",
     "shortcut": "<Control-o>",
     "level": 0
   },
   "Save file": {
     "function": "save",
-    "image": "img/save.png",
-    "display": "viewer",
-    "type": "button",
-    "side" : "right",
+    "display": "None",
     "shortcut": "<Control-s>",
     "level": 0
   },
   "Gallery": {
     "function": "gallery",
-    "image": "img/gallery.png",
-    "display": "viewer",
-    "type": "button",
-    "side": "right",
+    "display": "None",
     "shortcut": "<BackSpace>",
     "level": 0
   },

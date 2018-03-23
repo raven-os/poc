@@ -1,0 +1,99 @@
+{
+  "name": {
+    "value": "Image Viewer profile 3"
+  },
+  "color": {
+    "background": "#191919",
+    "foreground": "#666666"
+  },
+  "width": {
+    "value": 550
+  },
+  "height": {
+    "value": 600
+  },
+  "gallery_miniature_size": {
+    "value": 150
+  },
+  "image_directory": {
+    "value": "/img"
+  },
+  "<-": {
+    "function": "prev",
+    "display": "None",
+    "shortcut": "<Left>",
+    "level": 0
+  },
+  "->": {
+    "function": "next",
+    "display": "None",
+    "shortcut": "<Right>",
+    "level": 0
+  },
+  "↶": {
+    "function": "rotate_left",
+    "display": "None",
+    "shortcut": "<Control-l>",
+    "level": 0
+  },
+  "↷" : {
+    "function": "rotate_right",
+    "display": "None",
+    "shortcut": "<Control-r>",
+    "level": 0
+  },
+  "Open file": {
+    "function": "open",
+    "display": "None",
+    "shortcut": "<Control-o>",
+    "level": 0
+  },
+  "Save file": {
+    "function": "save",
+    "display": "None",
+    "shortcut": "<Control-s>",
+    "level": 0
+  },
+  "Gallery": {
+    "function": "gallery",
+    "display": "None",
+    "shortcut": "<BackSpace>",
+    "level": 0
+  },
+  "Viewer": {
+    "function": "viewer",
+    "image": "img/gallery.png",
+    "display": "gallery",
+    "type": "button",
+    "side": "left",
+    "level": 0
+  },
+  "Negatif Filter": {
+    "function": "negatif",
+    "display": "None",
+    "shortcut": "<Control-n>",
+    "level": 1
+  },
+  "Transpose Filter": {
+    "function": "transpose",
+    "display": "None",
+    "shortcut": "<Control-m>",
+    "level": 1
+  },
+  "Black And White Filter": {
+    "function": "blackAndWhite",
+    "display": "None",
+    "shortcut": "<Control-b>",
+    "level": 1
+  },
+  "ZoomIn": {
+    "function": "zoomIn",
+    "display": "None",
+    "shortcut": "<Up>"
+  },
+  "ZoomOut": {
+    "function": "zoomOut",
+    "display": "None",
+    "shortcut": "<Down>"
+  }
+}

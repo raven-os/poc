@@ -53,11 +53,14 @@ const PopupMenuProfile = new Lang.Class({
 
 	let item1 = new PopupMenu.PopupMenuItem('Profile 1');
 	let item2 = new PopupMenu.PopupMenuItem('Profile 2');
+	let item3 = new PopupMenu.PopupMenuItem('Profile 3');
 	this.menu.addMenuItem(item1);
 	this.menu.addMenuItem(item2);
+	this.menu.addMenuItem(item3);
 
-        item1.connect('activate', _profile1);
-        item2.connect('activate', _profile2);
+        item1.connect('activate', function(){_changeProfile("1");});
+        item2.connect('activate', function(){_changeProfile("2");});
+	item3.connect('activate', function(){_changeProfile("3");});
     },
 
     // Destructor
@@ -66,14 +69,6 @@ const PopupMenuProfile = new Lang.Class({
 	this.parent();
     }
 });
-
-function _profile1() {
-    _changeProfile("1");
-}
-
-function _profile2() {
-    _changeProfile("2");
-}
 
 /* DEBUG Function to write notification */
 function _myNotify(text) {

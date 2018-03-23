@@ -1,1 +1,98 @@
-{"name": {"value": "Image Viewer profile 2"}, "color": {"background": "#C1C1C1", "foreground": "#1C1C1C"}, "width": {"value": 1300}, "height": {"value": 900}, "gallery_miniature_size": {"value": 600}, "image_directory": {"value": "/img"}, "<-": {"function": "prev", "display": "None", "shortcut": "<Left>", "level": 0}, "->": {"function": "next", "display": "None", "shortcut": "<Right>", "level": 0}, "↶": {"function": "rotate_left", "display": "None", "shortcut": "<Control-l>", "level": 0}, "↷": {"function": "rotate_right", "display": "None", "shortcut": "<Control-r>", "level": 0}, "Open file": {"function": "open", "display": "None", "shortcut": "<Control-o>", "level": 0}, "Save file": {"function": "save", "display": "None", "shortcut": "<Control-s>", "level": 0}, "Gallery": {"function": "gallery", "display": "None", "shortcut": "<BackSpace>", "level": 0}, "Viewer": {"function": "viewer", "image": "img/gallery.png", "display": "gallery", "type": "button", "side": "left", "level": 0}, "Negatif Filter": {"function": "negatif", "image": "img/negative.png", "display": "viewer", "type": "button", "side": "right", "shortcut": "<Control-n>", "level": 1}, "Transpose Filter": {"function": "transpose", "image": "img/transpose.png", "display": "viewer", "type": "button", "side": "right", "shortcut": "<Control-m>", "level": 1}, "Black And White Filter": {"function": "blackAndWhite", "image": "img/contrast.png", "display": "viewer", "type": "button", "side": "right", "shortcut": "<Control-b>", "level": 1}, "Scrolling": {"direction": "reverse", "type": "other", "message": "scrolling direction", "level": 0}}
+{
+  "name": {
+    "value": "Image Viewer profile 2"
+  },
+  "color": {
+    "background": "#C1C1C1",
+    "foreground": "#1C1C1C"
+  },
+  "width": {
+    "value": 1300
+  },
+  "height": {
+    "value": 900
+  },
+  "gallery_miniature_size": {
+    "value": 600
+  },
+  "image_directory": {
+    "value": "/img"
+  },
+  "<-": {
+    "function": "prev",
+    "display": "None",
+    "shortcut": "<Left>",
+    "level": 0
+  },
+  "->": {
+    "function": "next",
+    "display": "None",
+    "shortcut": "<Right>",
+    "level": 0
+  },
+  "↶": {
+    "function": "rotate_left",
+    "display": "None",
+    "shortcut": "<Control-l>",
+    "level": 0
+  },
+  "↷" : {
+    "function": "rotate_right",
+    "display": "None",
+    "shortcut": "<Control-r>",
+    "level": 0
+  },
+  "Open file": {
+    "function": "open",
+    "display": "None",
+    "shortcut": "<Control-o>",
+    "level": 0
+  },
+  "Save file": {
+    "function": "save",
+    "display": "None",
+    "shortcut": "<Control-s>",
+    "level": 0
+  },
+  "Gallery": {
+    "function": "gallery",
+    "display": "None",
+    "shortcut": "<BackSpace>",
+    "level": 0
+  },
+  "Viewer": {
+    "function": "viewer",
+    "image": "img/gallery.png",
+    "display": "gallery",
+    "type": "button",
+    "side": "left",
+    "level": 0
+  },
+  "Negatif Filter": {
+    "function": "negatif",
+    "image": "img/negative.png",
+    "display": "viewer",
+    "type": "button",
+    "side" : "right",
+    "shortcut": "<Control-n>",
+    "level": 1
+  },
+  "Transpose Filter": {
+    "function": "transpose",
+    "image": "img/transpose.png",
+    "display": "viewer",
+    "type": "button",
+    "side" : "right",
+    "shortcut": "<Control-m>",
+    "level": 1
+  },
+  "Black And White Filter": {
+    "function": "blackAndWhite",
+    "image": "img/contrast.png",
+    "display": "viewer",
+    "type": "button",
+    "side" : "right",
+    "shortcut": "<Control-b>",
+    "level": 1
+  }
+}

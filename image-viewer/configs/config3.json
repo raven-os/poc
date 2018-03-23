@@ -16,7 +16,7 @@
     "value": 150
   },
   "image_directory": {
-    "value": "/img"
+    "value": "/Downloads"
   },
   "<-": {
     "function": "prev",

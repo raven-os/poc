@@ -12,6 +12,17 @@ class Filters():
         self.col, self.row = self.img.size
 
     def negatif(self):
+        image = self.img
+
+        if image.mode == 'RGBA':
+            r,g,b,a = image.split()
+            image = PIL.Image.merge('RGB', (r,g,b))
+        try:
+            inverted_image = PIL.ImageOps.invert(image)
+        except:
+            return image
+        return inverted_image
+        """Nope
         try:
             imgF = PIL.Image.new(self.img.mode, self.img.size)
             for i in range(self.row):
@@ -22,6 +33,7 @@ class Filters():
             return imgF
         except:
             return self.img
+        """
 
     def transpose(self):
         imgF = self.img.transpose(PIL.Image.FLIP_LEFT_RIGHT)

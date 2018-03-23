@@ -128,8 +128,8 @@ class App(Tk):
             return
         popup = Toplevel(self)
         popup.title("Select options for %s" % b)
-        popup.geometry("400x200")
-        Message(popup, text=self.config[b]["message"] ,width=100).pack()
+        popup.geometry("300x150")
+        Message(popup, text=self.config[b]["message"] ,width=200).pack(pady=10)
         v = {}
         for key in self.config[b]["should ask"]:
             pframe = Frame(popup)
@@ -142,7 +142,7 @@ class App(Tk):
         def _test(): # quit then destroy windows
             popup.quit()
             popup.destroy()
-        Button(popup, text="OK", command=_test).pack()
+        Button(popup, text="OK", command=_test, pady=5).pack()
         popup.protocol('WM_DELETE_WINDOW', _test)
         popup.mainloop()
         for elem in v:

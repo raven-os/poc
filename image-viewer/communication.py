@@ -19,11 +19,11 @@ def readFifo(app):
     while (not stop):
         try:
             if fd == -1:
-                print("Open fifo")
+                #print("Open fifo")
                 fd = os.open("/raven_com/fifo", os.O_RDONLY | os.O_NONBLOCK)
             data = os.read(fd, 1)
             if not stop and len(data) > 0:
-                print("Read: {0}".format(data))
+                #print("Read: {0}".format(data))
                 if (b'1' in data):
                     app.queue.put("configs/config1.json")
                     #app.updateConfig(config.Config(config = "configs/config1.json"))
@@ -35,7 +35,7 @@ def readFifo(app):
             sleep(0.1)
         except OSError as oe:
             print(oe)
-    print("Close fifo")
+    #print("Close fifo")
     os.close(fd)
 
 def startCom(app):
